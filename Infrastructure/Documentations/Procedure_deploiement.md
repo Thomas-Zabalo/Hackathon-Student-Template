@@ -2,7 +2,8 @@
 
 ## Vue d'ensemble
 
-Cette documentation décrit la procédure complète de déploiement de l'infrastructure Hackathon sur le homelab Proxmox hébergé chez Enzo. L'infrastructure est accessible via un tunnel VPN WireGuard et comprend 4 conteneurs LXC (WebServer, BDD, Monitoring, Backup) et 1 machine virtuelle FireWall (PfSense).
+Cette docu
+mentation décrit la procédure complète de déploiement de l'infrastructure Hackathon sur le homelab Proxmox hébergé chez Enzo. L'infrastructure est accessible via un tunnel VPN WireGuard et comprend 4 conteneurs LXC (WebServer, BDD, Monitoring, Backup) et 1 machine virtuelle FireWall (PfSense).
 
 **Infrastructure hébergée :** Homelab Proxmox - Enzo <br>
 **Pool d'infrastructure :** hackathon (ID 100XXX) <br>
@@ -25,7 +26,7 @@ L'accès au réseau de l'infrastructure se fait exclusivement via un tunnel VPN 
 
 **Durée du bail :** 2 jours (module Hackathon)
 
-![wireguard-web-bail.png](../assets/Procedure_deploiemen/wireguard-web-bail.png)
+![wireguard-web-bail.png](../assets/Procedure_deploiement/wireguard-web-bail.png)
 
 > **Prérequis :** Cette étape est obligatoire avant toute accession au Proxmox
 
@@ -42,7 +43,7 @@ Chaque utilisateur disposant d'un accès à l'infrastructure possède un compte 
 - Accès limité au pool hackathon
 - Permissions restreintes (voir section 2.2)
 
-![proxmox-useraccount.png](../assets/Procedure_deploiemen/proxmox-useraccount.png)
+![proxmox-useraccount.png](../assets/Procedure_deploiement/proxmox-useraccount.png)
 
 ### 2.2 Permissions utilisateurs
 
@@ -59,8 +60,8 @@ Les utilisateurs disposent des permissions suivantes sur le pool hackathon :
 - Création/suppression de VM : Réservée à Enzo (gestion architecturale)
 - Modification de l'architecture réseau : Réservée à Enzo
 
-![proxmox-pool-hackathon.png](../assets/Procedure_deploiemen/proxmox-pool-hackathon.png)
-![proxmox-groups-permissions.png](../assets/Procedure_deploiemen/proxmox-groups-permissions.png)
+![proxmox-pool-hackathon.png](../assets/Procedure_deploiement/proxmox-pool-hackathon.png)
+![proxmox-groups-permissions.png](../assets/Procedure_deploiement/proxmox-groups-permissions.png)
 
 > **Note :** L'architecture de l'infrastructure est réglementée. Seul Enzo peut créer ou modifier les conteneurs et machines virtuelles.
 
@@ -88,11 +89,11 @@ L'infrastructure Proxmox respecte les conventions d'ID suivantes :
 - **Clé SSH :** Configuration publique fournie (à définir lors de la création)
 - **Template :** Debian 13 Trixie
 
-![proxmox-CTcreate-general.png](../assets/Procedure_deploiemen/proxmox-CTcreate-general.png)
+![proxmox-CTcreate-general.png](../assets/Procedure_deploiement/proxmox-CTcreate-general.png)
 
 #### Étape 2 : Configuration du template
 
-![proxmox-CTcreate-tempalte.png](../assets/Procedure_deploiemen/proxmox-CTcreate-tempalte.png)
+![proxmox-CTcreate-tempalte.png](../assets/Procedure_deploiement/proxmox-CTcreate-tempalte.png)
 
 #### Étape 3 : Configuration du stockage disque
 
@@ -105,7 +106,7 @@ Les besoins disque s'adaptent selon la fonction du conteneur :
 | Monitoring  | 30 Go    | Logs et métriques      |
 | Backup      | 300 Go   | Stockage des backups   |
 
-![proxmox-CTcreate-Disk.png](../assets/Procedure_deploiemen/proxmox-CTcreate-Disk.png)
+![proxmox-CTcreate-Disk.png](../assets/Procedure_deploiement/proxmox-CTcreate-Disk.png)
 
 **Convention de stockage :** Respecter les conventions d'infrastructure en place et adapter selon les besoins.
 
@@ -120,8 +121,8 @@ Les ressources s'adaptent selon la charge anticipée :
 | Monitoring  | 2      | 2 Go  |
 | Backup      | 2      | 2 Go  |
 
-![proxmox-CTcreate-CPU.png](../assets/Procedure_deploiemen/proxmox-CTcreate-CPU.png)
-![proxmox-CTcreate-RAM.png](../assets/Procedure_deploiemen/proxmox-CTcreate-RAM.png)
+![proxmox-CTcreate-CPU.png](../assets/Procedure_deploiement/proxmox-CTcreate-CPU.png)
+![proxmox-CTcreate-RAM.png](../assets/Procedure_deploiement/proxmox-CTcreate-RAM.png)
 
 #### Étape 5 : Configuration réseau
 
@@ -130,9 +131,9 @@ Les ressources s'adaptent selon la charge anticipée :
 - **Bail DHCP :** Automatiquement attribué à chaque conteneur
 - **Documentation réseau :** Les IPs attribuées apparaissent automatiquement dans les notes Proxmox
 
-![proxmox-CTcreate-Network.png](../assets/Procedure_deploiemen/proxmox-CTcreate-Network.png)
+![proxmox-CTcreate-Network.png](../assets/Procedure_deploiement/proxmox-CTcreate-Network.png)
 Et l'arriver de l'addressage DHCP dans les notes Proxmox :
-![proxmox-webServer-note.png](../assets/Procedure_deploiemen/proxmox-webServer-note.png)
+![proxmox-webServer-note.png](../assets/Procedure_deploiement/proxmox-webServer-note.png)
 
 ### 3.3 Installation et configuration commune des LXC
 
@@ -149,7 +150,7 @@ apt upgrade -y
 - Accès root autorisé uniquement via clé SSH
 - Désactiver l'authentification par mot de passe dans SSH
 
-![ssh_config.png](../assets/Procedure_deploiemen/ssh_config.png)
+![ssh_config.png](../assets/Procedure_deploiement/ssh_config.png)
 
 #### Étape 3 : Installation de Docker et Docker Compose
 ```bash
@@ -175,7 +176,7 @@ systemctl start docker
 systemctl enable docker
 ```
 
-![docker_install.png](../assets/Procedure_deploiemen/docker_install.png)
+![docker_install.png](../assets/Procedure_deploiement/docker_install.png)
 
 #### Étape 4 : Snapshot de référence
 
@@ -206,11 +207,11 @@ La machine virtuelle firewall suit les mêmes conventions d'ID que les LXC :
 - **ISO :** Netgate PfSense 2.8
 - **Système d'exploitation :** PfSense (FreeBSD based)
 
-![Configuration initiale VM - Étape 1]
+![proxmox-VMcreate-general.png](../assets/Procedure_deploiement/proxmox-VMcreate-general.png)
 
 #### Étape 2 : Sélection de l'ISO
 
-![Sélection ISO Netgate PfSense 2.8]
+![proxmox-VMcreate-OS.png](../assets/Procedure_deploiement/proxmox-VMcreate-OS.png)
 
 #### Étape 3 : Configuration système
 
@@ -219,7 +220,7 @@ Configuration minimale appropriée pour les besoins du firewall :
 - **BIOS :** Configuration standard Proxmox
 - Autres paramètres système au minimum nécessaire
 
-![Configuration système VM]
+![proxmox-VMcreate-system.png](../assets/Procedure_deploiement/proxmox-VMcreate-system.png)
 
 #### Étape 4 : Configuration du stockage disque
 
@@ -229,7 +230,7 @@ Configuration minimale appropriée pour les besoins du firewall :
 
 *Peut être réduit selon les besoins, 20 Go est une allocation confortable
 
-![Configuration stockage VM]
+![proxmox-VMcreate-disk.png](../assets/Procedure_deploiement/proxmox-VMcreate-disk.png)
 
 #### Étape 5 : Allocation CPU et mémoire
 
@@ -237,7 +238,8 @@ Configuration minimale appropriée pour les besoins du firewall :
 |------------|--------|-------|
 | PfSense    | 2      | 2 Go  |
 
-![Configuration CPU et mémoire VM]
+![proxmox-VMcreate-CPU.png](../assets/Procedure_deploiement/proxmox-VMcreate-CPU.png)
+![proxmox-VMcreate-RAM.png](../assets/Procedure_deploiement/proxmox-VMcreate-RAM.png)
 
 #### Étape 6 : Configuration réseau
 
@@ -246,7 +248,7 @@ Configuration minimale appropriée pour les besoins du firewall :
 - **Configuration réseau :** Nécessaire lors de l'installation PfSense
 - **Documentation réseau :** IP et configuration documentées dans les notes Proxmox
 
-![Configuration réseau VM]
+![proxmox-VMcreate-network.png](../assets/Procedure_deploiement/proxmox-VMcreate-network.png)
 
 > **Important :** Le montage réseau (network bridging/VLAN) sera configuré lors de l'installation de PfSense
 
