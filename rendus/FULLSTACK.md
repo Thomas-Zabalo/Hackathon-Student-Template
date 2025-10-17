@@ -16,18 +16,53 @@ Votre mission : transformer le babyfoot classique en expérience high-tech pour 
 
 ---
 
-> Ce fichier contient les informations spécifiques au développement FullStack de votre projet. Il suffit d'en remplir une seule fois, même si vous êtes plusieurs développeurs FullStack dans l'équipe.
+Choix techniques :
 
-# Requis
+- Front-End : Next.Js
+L'utilisation de ce framework nous sert à utiliser l'UI kit, ce framework fonctionne comme le React que nous maîtrisons et de plus il travaille côté client et serveur pour éviter des chargements trop long.
 
-Ce README contient les requis fonctionnels de la partie FullStack de votre projet. Il doit compléter le README principal à la racine du projet, et servira la partie de votre note propre à votre spécialité.
+- Back-End : Java
+L'utilisation de ce langage natif nous permet de réaliser un backend viable et fonctionnel, Java est le langage backend que certains d'entre nous utilise dans le cadre de nos alternances.
 
-Basez-vous sur les spécifications dans [SPECIFICATIONS.md](../SPECIFICATIONS.md) pour remplir ce document.
+- Base de Données : PostGreSQL
+L'utilisation de PostGreSQL à été le choix de l'équipe "INFRASTRUCTURE", ce SGBDRO nous a permis de réaliser le schéma de données pour cette applciation web.
 
-Décrivez ici les fonctionnalités que vous avez implémentées, votre démarche, les choix techniques que vous avez faits, les difficultés rencontrées, etc. Précisez également dans quelle mesure vous avez pu collaborer avec les autres spécialités.
+<img width="1149" height="631" alt="image" src="https://github.com/user-attachments/assets/61f011f6-09b1-4f27-8bb0-d19aa2e4f834" />
 
-Autrement, il n'y a pas de format imposé, mais essayez de rester clair et concis, je ne vous demande pas de rédiger un roman, passez à l'essentiel, et épargnez-moi de longues pages générées par IA (malusée).
+Fonctionnalités implémentées :
 
-En conclusion, cela doit résumer votre travail en tant que développeur.se FullStack, et vous permettre de garder un trace écrite de votre contribution au projet.
+- HomePage :
+    Cette page affiche un graphique contenant les moyennes de vitesse des matchs joués.
+  
+- Dashboard Admin :
+    Cette page permet à l'administrateur de réaliser la gestion des utilisateurs et des baby-foot (via des fonctions CRUD), elle permet a l'utilisateur d'accéder à ses informations personnelles afin de les           modifier si nécéssaire.
 
-Merci de votre participation, et bon courage pour la suite du hackathon !
+- Sign In/ Sign Up :
+    Ces pages permettent l'enregistrement des utilisateurs sur la plateforme avec leur adresse mail Ynov, et leur connexion avec token.
+
+- Page de matchs :
+    Cette page affiche les matchs en cours avec les score en direct ainsi que la vitesse des buts.
+
+- Page d'équipe :
+    Cette page permet à l'utilisateur de consulter les équipes existantes.
+  
+Pour les utilisateurs connectés :
+- Page d'équipe :
+    Cette page permet à l'utilisateur connnecté, la création d'une équipe et l'adhésion à une équipe qu'il peut choisir
+
+
+Les difficultés rencontrées :
+
+- Le délai imposé que nous avons trouvé un peu court.
+- Modification du template Genesis.
+
+Dans quelles mesures avons nous pu collaborer avec d'autres spécialités :
+
+- Pour la réalisation de la base de données nous avons collaboré avec l'équipe "INFRASTRUCTURE".
+- Pour la capture de vitesse de la balle et le comptage des buts nous avons collaborer avec l'équipe "IOT".
+
+
+Pour conclure, nous avons su relever le défi de réinventer l’expérience babyfoot à Ynov en développant une application web moderne, fluide et intuitive, pensée pour les étudiants.
+Grâce à une stack technique solide et une collaboration efficace avec les équipes "INFRASTRUCTURE" et "IOT", nous avons pu proposer une solution à la fois esthétique, performante et connectée. 
+Malgré un temps de développement limité et quelques ajustements techniques complexes, nous avons su mettre en place les fonctionnalités clés de notre application.
+
