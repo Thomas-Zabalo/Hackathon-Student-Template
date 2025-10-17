@@ -1,0 +1,115 @@
+html {
+  font-size: 14px;
+}
+@import "primeicons/primeicons.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+
+  --gradient-background: linear-gradient(
+    180deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
+  --gradient-background-to-top: linear-gradient(
+    0deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
+  --gradient-background-to-left: linear-gradient(
+   90deg,
+    var(--bg-gradient-from) 0%,
+    var(--bg-gradient-to) 100%
+  );
+  /* Shadows */
+  --card-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.06),
+    0px -1px 1px 0px rgba(0, 0, 0, 0.06) inset,
+    0px 12px 3px 0px rgba(0, 0, 0, 0), 0px 8px 3px 0px rgba(0, 0, 0, 0.01),
+    0px 4px 3px 0px rgba(0, 0, 0, 0.03), 0px 2px 2px 0px rgba(0, 0, 0, 0.05),
+    0px 0px 1px 0px rgba(0, 0, 0, 0.06);
+
+  --black-card-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.06),
+    0px -1px 1px 0px rgba(0, 0, 0, 0.06) inset,
+    0px 12px 3px 0px rgba(0, 0, 0, 0), 0px 8px 3px 0px rgba(0, 0, 0, 0.01),
+    0px 4px 3px 0px rgba(0, 0, 0, 0.03), 0px 2px 2px 0px rgba(0, 0, 0, 0.05),
+    0px 0px 1px 0px rgba(0, 0, 0, 0.06);
+
+  --blue-card-shadow: 0px 59px 16px -8px rgba(120, 149, 206, 0),
+    0px 38px 15px -8px rgba(120, 149, 206, 0.01),
+    0px 21px 13px -8px rgba(120, 149, 206, 0.04),
+    0px 9px 9px -4px rgba(120, 149, 206, 0.07),
+    0px 2px 5px 0px rgba(120, 149, 206, 0.08);
+
+  --stroke-shadow: 0px 1px 2px 0px rgba(164, 172, 185, 0.24),
+    0px 0px 0px 1px rgba(18, 55, 105, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: rgb(var(--surface-950));
+  background: rgb(var(--surface-0));
+  font-family: "InterDisplay", sans-serif;
+}
+
+.dark body {
+  color: rgb(var(--surface-0));
+  background: rgb(var(--surface-950));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .title {
+    @apply text-6xl bg-clip-text text-transparent font-semibold leading-[125%] bg-[linear-gradient(180deg,rgba(255,255,255,0.85)_5%,rgba(255,255,255,1)_90%)];
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .description {
+    @apply text-lg lg:text-xl leading-7 text-white/64;
+  }
+
+  .button-regular {
+    @apply min-w-28 px-5 py-2 rounded-full flex items-center justify-center gap-2 font-medium text-surface-950 bg-surface-0 cursor-pointer hover:opacity-80 transition-all shadow-[0px_10px_10px_-8px_rgba(18,18,23,0.02),0px_2px_2px_-1.5px_rgba(18,18,23,0.02),0px_1px_1px_-0.5px_rgba(18,18,23,0.02),0px_0px_0px_1px_rgba(18,18,23,0.02)];
+  }
+
+  .button-outlined {
+    @apply min-w-28 px-5 py-2 rounded-full flex items-center justify-center gap-2 font-medium text-surface-0 cursor-pointer backdrop-blur-lg border border-white/24 hover:opacity-80 transition-all;
+  }
+
+  .button-gradient {
+    @apply rounded-full px-5 py-2 bg-main-gradient shadow-blue-card min-w-28 w-fit flex items-center justify-center gap-2 font-medium text-surface-0 cursor-pointer hover:opacity-80 transition-all;
+  }
+
+  .button-normal {
+    @apply rounded-full px-5 py-2 dark:bg-white dark:text-black min-w-28 w-fit flex items-center justify-center gap-2 font-medium text-surface-0 cursor-pointer hover:opacity-80 transition-all;
+  }
+
+  .button-blur{
+    @apply h-11 px-5 rounded-full flex items-center justify-center gap-2 bg-white/16 hover:bg-white/24 transition-all backdrop-blur-[48px] text-surface-0 font-medium border border-white/8 shadow-[0px_2px_5px_0px_rgba(255,255,255,0.06)_inset,0px_12px_20px_0px_rgba(0,0,0,0.06)];
+  }
+  .badge {
+    @apply block px-3.5 py-1 w-fit rounded-full border border-surface-200 dark:border-surface-800 bg-surface-0 dark:bg-surface-950 font-medium text-surface-950 dark:text-surface-0 shadow-[0px_1px_2px_0px_rgba(18,18,23,0.05)] ;
+  }
+
+  .container {
+    @apply max-w-[1152px] px-4 mx-auto;
+  }
+
+  .icon-box{
+    @apply w-14 h-14 lg:w-20 lg:h-20 flex items-center justify-center mx-auto bg-main-gradient rounded-2xl lg:rounded-3xl [&>svg]:w-8 [&>svg]:h-8 [&>svg]:lg:w-10 [&>svg]:lg:h-10  shadow-[0px_2px_3px_0px_rgba(255,255,255,0.25)_inset,0px_19px_5px_0px_rgba(0,0,0,0.00),0px_12px_5px_0px_rgba(0,0,0,0.01),0px_7px_4px_0px_rgba(0,0,0,0.05),0px_3px_3px_0px_rgba(0,0,0,0.09),0px_1px_2px_0px_rgba(0,0,0,0.10)];
+  }
+}
