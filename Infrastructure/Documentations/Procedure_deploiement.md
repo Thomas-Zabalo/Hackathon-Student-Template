@@ -394,7 +394,7 @@ Après création de la VM :
 9. Attendez la fin de l'installation
 10. Sélectionnez **Reboot**
 
-![Installation pfSense](Hackathon-Student-Template/Infrastructure/assets/Procedure_deploiement/pfsense.png)
+![Installation pfSense](../assets/Procedure_deploiement/pfsense.png)
 *Installation de pfSense en mode console*
 
 ### 3. Détacher l'ISO
@@ -469,4 +469,5 @@ En cas de problème ou de demande spécifique (créer un nouveau conteneur, modi
 - **Accès & Permissions :** Enzo
 
 - **Documentation :** A jour au 16/10/2025 à 14:15
+
 
