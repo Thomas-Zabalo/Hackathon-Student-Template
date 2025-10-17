@@ -51,7 +51,7 @@ sudo mkdir -p /opt/postgresql-docker
 cd /opt/postgresql-docker
 ```
 
-![Emplacement](Infrastructure/assets/Procedure_deploiement/emplacement.png)
+![Emplacement](../assets/Procedure_deploiement/emplacement.png)
 *Emplacement des fichiers de configuration*
 
 ### 2. Créer le fichier docker-compose.yml
@@ -108,7 +108,7 @@ networks:
 - `PGADMIN_DEFAULT_EMAIL` : email de connexion pgAdmin
 - `PGADMIN_DEFAULT_PASSWORD` : mot de passe pgAdmin
 
-![Docker Compose](Infrastructure/assets/Procedure_deploiement/Docker_compose.png)
+![Docker Compose](../assets/Procedure_deploiement/Docker_compose.png)
 *Configuration du fichier docker-compose.yml*
 
 ### 3. Créer le répertoire pour les scripts d'initialisation (optionnel)
@@ -235,7 +235,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO dev_user
 \du dev_user
 ```
 
-![Compte utilisateur](Infrastructure/assets/Procedure_deploiement/Compte_user.png)
+![Compte utilisateur](../assets/Procedure_deploiement/Compte_user.png)
 *Gestion des comptes utilisateurs PostgreSQL*
 
 ### Informations de connexion pour les développeurs
