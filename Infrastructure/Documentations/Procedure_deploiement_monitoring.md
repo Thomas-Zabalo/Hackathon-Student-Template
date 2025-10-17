@@ -1,38 +1,55 @@
-# **📊 Supervision avec Prometheus, Node Exporter et Grafana**
-
-## **🧱 Objectif**
-
-Mettre en place une solution complète de **monitoring système** (CPU, RAM, stockage) à l’aide de :
-
-- **Prometheus** → collecte et stockage des métriques
-- **Node Exporter** → expose les métriques système Linux
-- **Grafana** → visualisation (graphes, camemberts, dashboards)
+# Guide d’Installation et Configuration de Prometheus, Node Exporter et Grafana
 
 ---
 
-## **⚙️ 1️⃣ Installation de Prometheus (Docker)**
+## Aperçu
 
-### **📁 Structure des fichiers**
+Ce guide décrit la mise en place d’une **solution complète de supervision système** à l’aide de trois outils open source :
 
-Crée un dossier :
+- **Prometheus** → collecte et stocke les métriques  
+- **Node Exporter** → expose les métriques système Linux  
+- **Grafana** → visualise les données sous forme de tableaux de bord et graphiques interactifs  
 
-```powershell
+Cette architecture permet de **surveiller la santé d’un ou plusieurs serveurs** : CPU, RAM, disque, etc.
+
+---
+
+## Prérequis
+
+- Serveur Linux (ici Debian) accessible via SSH  
+- Docker et Docker Compose installés (pour Prometheus et Grafana)  
+- Accès administrateur ou utilisateur avec privilèges `sudo`  
+- Connectivité réseau entre les serveurs supervisés et le serveur Prometheus  
+
+---
+
+## Installation
+
+### Étape 1 : Préparer la structure des fichiers Prometheus
+
+1. Créer le répertoire de travail :
+
+```bash
 mkdir -p /opt/prometheus
 cd /opt/prometheus
 ```
 
-Fichiers nécessaires :
+2. Créer la structure suivante :
 
-```powershell
+```
 /opt/prometheus
  ├── docker-compose.yml
  ├── prometheus.yml
- └── data/               # stockage de la base Prometheus
+ └── data/               # stockage local de la base Prometheus
 ```
 
-**🐳 docker-compose.yml**
+---
 
-```powershell
+### Étape 2 : Déployer Prometheus
+
+#### 1. Fichier docker-compose.yml
+
+```yaml
 version: '3.8'
 
 services:
@@ -47,9 +64,9 @@ services:
     restart: unless-stopped
 ```
 
-**⚙️ prometheus.yml**
+#### 2. Fichier prometheus.yml
 
-```powershell
+```yaml
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
@@ -65,45 +82,65 @@ scrape_configs:
   - job_name: 'node-exporter-bdd'
     scrape_interval: 10s
     static_configs:
-      - targets: ['192.168.100.27:9100']  # IP du serveur surveillé
+      - targets: ['192.168.100.27:9100']  # IP du serveur supervisé
 ```
 
-**▶️ Démarrage**
+#### 3. Lancer Prometheus
 
-```powershell
+```bash
 docker compose up -d
 ```
 
-Accès à l’interface Prometheus :
+#### 4. Vérifier l’accès à l’interface web
 
-👉 [http://192.168.100.32:9090](http://192.168.100.32:9090/)
+Ouvrir dans un navigateur :  
+👉 **http://192.168.100.32:9090**
 
-## **🧩 2️⃣ Installation du Node Exporter (sur le serveur Debian)**
+---
 
-### **📦 Installation**
+## Configuration du Node Exporter (Backend)
 
-```powershell
+**Node Exporter** expose les métriques système d’un serveur Linux sur le port **9100**.  
+Prometheus interrogera ce service pour collecter les données.
+
+### Étape 1 : Installation du Node Exporter
+
+Sur le serveur à superviser :
+
+```bash
 sudo apt update
 sudo apt install prometheus-node-exporter -y
 ```
 
-**🚀 Vérification du service**
+### Étape 2 : Vérification du service
 
-```powershell
+Vérifier que le service est actif :
+
+```bash
 sudo systemctl status prometheus-node-exporter
 ```
 
-Il doit écouter sur le port **9100** :
+Sortie attendue :
 
-```powershell
+```
 prometheus-node-exporter.service - Prometheus exporter for machine metrics
      Active: active (running)
      Listen: [::]:9100
 ```
 
-### **📊 3️⃣ Installation de Grafana (Docker)**
+Si le port **9100** est ouvert, Prometheus pourra collecter les métriques.
 
-```powershell
+---
+
+## Configuration de Grafana (Frontend)
+
+Grafana permet de visualiser les métriques collectées sous forme de **dashboards**.
+
+### Étape 1 : Déploiement via Docker
+
+Créer un fichier `docker-compose.yml` :
+
+```yaml
 version: '3.8'
 
 services:
@@ -118,89 +155,115 @@ services:
     restart: unless-stopped
 ```
 
-Démarre Grafana :
+Démarrer le service :
 
-```powershell
+```bash
 docker compose up -d
 ```
 
-Accès à l’interface :
+Accéder à Grafana :  
+👉 **http://192.168.100.32:3000**  
+Identifiants par défaut :  
+- **Username :** admin  
+- **Password :** admin1234 
 
-👉 [http://192.168.100.32:3000](http://192.168.100.32:3000/)
+---
 
-****
+## Configuration de la Source de Données (Prometheus)
 
-### **🔗 4️⃣ Lier Grafana à Prometheus**
+### Étapes :
 
-### **Étapes :**
+1. Dans Grafana → aller dans **⚙️ Settings > Data Sources**  
+2. Cliquer sur **Add data source**  
+3. Choisir **Prometheus**  
+4. Configurer l’URL selon l'installation :
 
-1. Ouvre Grafana → **⚙️ Settings → Data sources**
-2. Clique sur **Add data source**
-3. Choisis **Prometheus**
-4. Configure :
-
-```powershell
-URL : http://prometheus:9090
-(ou http://192.168.100.32:9090)
+```
+URL : http://192.168.100.32:9090
 ```
 
-1. Clique sur **Save & test** → ✅ “Data source is working”
+5. Cliquer sur **Save & test**  
+✅ Message attendu : *“Data source is working”*
 
-## **5️⃣ Créer un Dashboard de supervision**
+---
 
-### **➕ Étapes de base**
+## Création du Dashboard de Supervision
 
-1. Dans Grafana → **+ → Dashboard → Add a new panel**
-2. Choisis ta source de données Prometheus
+### Étape 1 : Créer un nouveau Dashboard
 
-**📈 CPU Utilization (%)**
+1. Dans Grafana → **+ → Dashboard → Add a new panel**  
+2. Sélectionner la source de données **Prometheus**
 
-```powershell
-100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
-```
+---
 
-- **Title** : CPU Utilization
-- **Unit** : Percent (0–100)
+### Étape 2 : Ajouter les métriques principales
 
-**📈 Memory Usage (%)**
+| Indicateur | Requête PromQL | Unité | Description |
+|-------------|----------------|-------|--------------|
+| **CPU Utilization (%)** | `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)` | % | Pourcentage d’utilisation CPU |
+| **Memory Usage (%)** | `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100` | % | Utilisation mémoire totale |
+| **Disk Usage (%)** | `(1 - (node_filesystem_free_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100` | % | Utilisation du stockage disque |
 
-```powershell
-(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100
-```
+Configurer chaque panneau :  
+- **Title :** nom de la métrique  
+- **Unit :** Percent (0–100)  
 
-- **Title** : Memory Usage
-- **Unit** : Percent (0–100)
+---
 
-**📈 Disk Usage (%)**
+## Création d’un Graphique “Camembert” pour le Stockage
 
-```powershell
-(1 - (node_filesystem_free_bytes{fstype!~"tmpfs|overlay"} 
-      / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100
-```
+### Type de Panel
+- Sélectionner **Pie chart** (ou “Pie chart (beta)”)
 
-- **Title** : Disk Usage
-- **Unit** : Percent (0–100)
+### Requêtes :
 
-## **🍰 6️⃣ Graphique “Camembert” pour le stockage**
+| Légende | Requête PromQL |
+|----------|----------------|
+| **Espace utilisé (%)** | `(1 - (node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"})) * 100` |
+| **Espace libre (%)** | `(node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"}) * 100` |
 
-### **⚙️ Type de panel**
+---
 
-- Type → **Pie chart** (ou “Pie chart (beta)”)
+## Gestion et Vérification des Services
 
-### **🔹 Requête 1 : Espace utilisé (%)**
+### Prometheus
 
-```powershell
-(1 - (node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} 
-      / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"})) * 100
-```
+| Action | Commande |
+|--------|-----------|
+| Démarrer | `docker compose up -d` |
+| Redémarrer | `docker compose restart` |
+| Arrêter | `docker compose down` |
 
-- **Legend** : Espace utilisé (%)
+Vérifier le statut :  
+👉 **http://[IP_PROMETHEUS]:9090/targets**
 
-### **🔹 Requête 2 : Espace libre (%)**
+### Grafana
 
-```powershell
-(node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} 
- / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"}) * 100
-```
+| Action | Commande |
+|--------|-----------|
+| Démarrer | `docker compose up -d` |
+| Accès web | http://[IP_GRAFANA]:3000 |
+| Configuration | ⚙️ → Data Sources → Prometheus |
 
-- **Legend** : Espace libre (%)
+---
+
+## Vérifications et Tests
+
+### Vérifier la collecte de métriques
+
+Dans Prometheus → **Status > Targets**
+- Les cibles (`node-exporter-bdd`) doivent être **UP**
+- Vérifier le délai de scrap (5–10s)
+
+### Vérifier les tableaux de bord Grafana
+
+- Les graphiques CPU, RAM et disque doivent s’actualiser automatiquement  
+- Le camembert reflète la répartition de l’espace utilisé/libre  
+
+---
+
+## Ressources supplémentaires
+
+- Documentation Prometheus : [https://prometheus.io/docs/](https://prometheus.io/docs/)  
+- Node Exporter : [https://github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter)  
+- Documentation Grafana : [https://grafana.com/docs/](https://grafana.com/docs/)
