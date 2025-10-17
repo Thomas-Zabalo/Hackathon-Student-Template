@@ -284,95 +284,6 @@ Rendez-vous sur : https://www.pfsense.org/download/
 4. Cliquez sur **Upload**
 5. Sélectionnez l'ISO pfSense téléchargé
 
-## Recommandations de performance
-
-### Configuration matérielle recommandée
-
-| Utilisation | vCPU | RAM | Disque | Notes |
-|-------------|------|-----|--------|-------|
-| **Petit réseau** (< 20 utilisateurs) | 1-2 | 2 GB | 16 GB | Usage basique |
-| **Réseau moyen** (20-100 utilisateurs) | 2-4 | 4 GB | 32 GB | Filtrage + VPN |
-| **Grand réseau** (> 100 utilisateurs) | 4-8 | 8 GB | 64 GB | IDS/IPS + packages |
-
-### Recommandations générales
-
-- **Type de CPU** : host (pour meilleures performances)
-- **Type de disque** : VirtIO SCSI (meilleur I/O)
-- **Cache disque** : Write back (avec batterie/UPS) ou Write through
-- **Réseau** : VirtIO (paravirtualisé)
-- **BIOS** : SeaBIOS (compatibilité pfSense)
-
-## Création de la VM pfSense
-
-### 1. Créer une nouvelle VM
-
-Dans l'interface Proxmox, cliquez sur **Create VM** en haut à droite.
-
-### 2. Onglet General
-
-- **Node** : Sélectionnez votre nœud Proxmox
-- **VM ID** : 100 (ou un ID disponible)
-- **Name** : pfsense
-- **Resource Pool** : (optionnel)
-
-### 3. Onglet OS
-
-- **Use CD/DVD disc image file (iso)** : Cochez
-- **Storage** : local
-- **ISO image** : Sélectionnez l'ISO pfSense
-- **Guest OS Type** : Other
-- **Guest OS Version** : Other
-
-### 4. Onglet System
-
-- **Graphic card** : Default
-- **Machine** : Default (i440fx)
-- **BIOS** : SeaBIOS
-- **SCSI Controller** : VirtIO SCSI single
-- **Qemu Agent** : Décoché (pfSense ne supporte pas)
-
-### 5. Onglet Disks
-
-- **Bus/Device** : SCSI
-- **Storage** : local-lvm (ou votre stockage préféré)
-- **Disk size (GiB)** : 32 (minimum 16 GB)
-- **Cache** : Write through (ou Write back si UPS)
-- **Discard** : Coché (si SSD)
-- **SSD emulation** : Coché (si stockage sur SSD)
-
-### 6. Onglet CPU
-
-- **Sockets** : 1
-- **Cores** : 2 (minimum, 4 pour charge élevée)
-- **Type** : host
-- **Enable NUMA** : Décoché
-
-### 7. Onglet Memory
-
-- **Memory (MiB)** : 4096 (4 GB minimum, 8 GB recommandé pour IDS/IPS)
-- **Ballooning Device** : Décoché (pour performances stables)
-
-### 8. Onglet Network
-
-**Interface réseau WAN (net0)** :
-- **Bridge** : vmbr0 (ou votre bridge WAN)
-- **Model** : VirtIO (paravirtualized)
-- **Firewall** : Décoché
-
-Cliquez sur **Finish** pour créer la VM.
-
-### 9. Ajouter l'interface LAN
-
-Après création de la VM :
-
-1. Sélectionnez la VM **pfsense**
-2. Allez dans **Hardware**
-3. Cliquez sur **Add** > **Network Device**
-4. **Bridge** : vmbr1 (ou votre bridge LAN)
-5. **Model** : VirtIO
-6. **Firewall** : Décoché
-7. Cliquez sur **Add**
-
 ## Installation de pfSense
 
 ### 1. Démarrer la VM
@@ -469,5 +380,6 @@ En cas de problème ou de demande spécifique (créer un nouveau conteneur, modi
 - **Accès & Permissions :** Enzo
 
 - **Documentation :** A jour au 16/10/2025 à 14:15
+
 
 
