@@ -122,7 +122,73 @@ Création d'un notebook complet (`exploration.ipynb`) permettant:
 
 ---
 
-### 4. Documentation Complète 📚
+### 4. Participation à l'Élaboration de la Base de Données 🗄️
+
+**Fichiers produits:**
+- `ia_data/DATABASE_RECOMMENDATIONS.md` - Schéma SQL complet avec justifications EDA (6,500+ lignes)
+- `ia_data/DATABASE_SCHEMA.md` - Diagramme ERD visuel
+- `ia_data/export_to_sql.py` - Script d'export automatique vers seeds SQL
+
+#### Recommandations pour l'équipe Dev FullStack
+
+**Schéma de base de données conçu** basé sur les insights EDA :
+
+| Table | Justification EDA | Contraintes appliquées |
+|-------|-------------------|------------------------|
+| `players` | 803 joueurs uniques identifiés | Âge: 12-65 ans (anomalies < 12 et > 60 détectées) |
+| `locations` | 30 lieux, "Bar Le Foos" = le plus actif (10,440 parties) | Stats pré-calculées pour dashboards |
+| `tables` | Tables T01-T29 identifiées | Liaison avec locations pour analytics |
+| `games` | 25,002 parties analysées | Durée: 60-3600s, Scores: 0-10 (basé sur anomalies) |
+| `game_players` | Corrélation goals/assists analysée | Buts max: 10/partie (0.5% dépassent = anomalie) |
+| `real_time_events` | Pour intégration IoT | Détection anomalies temps réel |
+
+**5 Endpoints API documentés** avec requêtes SQL optimisées :
+- `GET /api/leaderboard/scorers` - Top 10 buteurs
+- `GET /api/leaderboard/defenders` - Top 5 défenseurs  
+- `GET /api/analytics/timeline` - Timeline mensuelle
+- `GET /api/analytics/peak-hours` - Heures de pointe (19h = pic)
+- `GET /api/analytics/team-balance` - Test Chi-carré Rouge vs Bleu
+
+**6 Indices de performance** recommandés pour :
+- Leaderboards (< 50ms attendu)
+- Timeline mensuelle (< 100ms pour 25k parties)
+- Recherche joueurs (< 20ms)
+
+#### Intégration IoT/Systèmes Embarqués
+
+**Architecture temps réel proposée** :
+```
+Capteurs → ESP32/MQTT → Backend → WebSocket → Dashboard live
+```
+
+**Table `real_time_events`** pour streaming :
+- Détection goals/saves en temps réel
+- Validation confidence_score ≥ 0.80
+- Alerte admin si anomalies (durée > 30min, > 10 buts/min)
+
+**Format MQTT standardisé** :
+```
+Topic: babyfoot/{location_id}/{table_id}/{event_type}
+Payload: {team, timestamp, sensor, confidence}
+```
+
+#### Données exportées pour démarrage
+
+**Seeds SQL générés** par `export_to_sql.py` :
+- `01_players.sql` - Top 100 joueurs réels du dataset
+- `02_locations.sql` - 30 lieux avec statistiques
+- `03_tables.sql` - Tables identifiées
+- `04_sample_games.sql` - 100 parties représentatives
+- `05_game_players.sql` - Participations correspondantes
+
+**Impact pour les autres équipes** :
+- ✅ **Dev** : Base de données prête à l'emploi, API specs claires
+- ✅ **IoT** : Schéma temps réel, seuils anomalies définis
+- ✅ **Infra** : Indices optimisés, vues matérialisées, volumétrie connue
+
+---
+
+### 5. Documentation Complète 📚
 
 Production de 3 documents détaillés:
 
