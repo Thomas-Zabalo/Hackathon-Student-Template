@@ -16,7 +16,7 @@ Cette architecture permet de **surveiller la santé d’un ou plusieurs serveurs
 
 ## Prérequis
 
-- Serveur Linux (ici Debian) accessible via SSH  
+- Serveur Linux (ici Debian 13) accessible via SSH  
 - Docker et Docker Compose installés (pour Prometheus et Grafana)  
 - Accès administrateur ou utilisateur avec privilèges `sudo`  
 - Connectivité réseau entre les serveurs supervisés et le serveur Prometheus  
@@ -94,11 +94,11 @@ docker compose up -d
 #### 4. Vérifier l’accès à l’interface web
 
 Ouvrir dans un navigateur :  
-👉 **http://192.168.100.32:9090**
+**http://192.168.100.32:9090**
 
 ---
 
-## Configuration du Node Exporter (Backend)
+## Configuration de Node Exporter
 
 **Node Exporter** expose les métriques système d’un serveur Linux sur le port **9100**.  
 Prometheus interrogera ce service pour collecter les données.
@@ -132,7 +132,7 @@ Si le port **9100** est ouvert, Prometheus pourra collecter les métriques.
 
 ---
 
-## Configuration de Grafana (Frontend)
+## Configuration de Grafana
 
 Grafana permet de visualiser les métriques collectées sous forme de **dashboards**.
 
@@ -162,10 +162,10 @@ docker compose up -d
 ```
 
 Accéder à Grafana :  
-👉 **http://192.168.100.32:3000**  
+**http://192.168.100.32:3000**  
 Identifiants par défaut :  
 - **Username :** admin  
-- **Password :** admin1234 
+- **Password :** admin
 
 ---
 
@@ -173,97 +173,16 @@ Identifiants par défaut :
 
 ### Étapes :
 
-1. Dans Grafana → aller dans **⚙️ Settings > Data Sources**  
+1. Dans Grafana → aller dans **Settings > Data Sources**  
 2. Cliquer sur **Add data source**  
 3. Choisir **Prometheus**  
-4. Configurer l’URL selon l'installation :
+4. Configurer l’URL de l'installation :
 
 ```
 URL : http://192.168.100.32:9090
 ```
 
 5. Cliquer sur **Save & test**  
-✅ Message attendu : *“Data source is working”*
+Message de validation : *“Data source is working”*
 
----
-
-## Création du Dashboard de Supervision
-
-### Étape 1 : Créer un nouveau Dashboard
-
-1. Dans Grafana → **+ → Dashboard → Add a new panel**  
-2. Sélectionner la source de données **Prometheus**
-
----
-
-### Étape 2 : Ajouter les métriques principales
-
-| Indicateur | Requête PromQL | Unité | Description |
-|-------------|----------------|-------|--------------|
-| **CPU Utilization (%)** | `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)` | % | Pourcentage d’utilisation CPU |
-| **Memory Usage (%)** | `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100` | % | Utilisation mémoire totale |
-| **Disk Usage (%)** | `(1 - (node_filesystem_free_bytes{fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{fstype!~"tmpfs|overlay"})) * 100` | % | Utilisation du stockage disque |
-
-Configurer chaque panneau :  
-- **Title :** nom de la métrique  
-- **Unit :** Percent (0–100)  
-
----
-
-## Création d’un Graphique “Camembert” pour le Stockage
-
-### Type de Panel
-- Sélectionner **Pie chart** (ou “Pie chart (beta)”)
-
-### Requêtes :
-
-| Légende | Requête PromQL |
-|----------|----------------|
-| **Espace utilisé (%)** | `(1 - (node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"})) * 100` |
-| **Espace libre (%)** | `(node_filesystem_free_bytes{mountpoint="/", fstype!~"tmpfs|overlay"} / node_filesystem_size_bytes{mountpoint="/", fstype!~"tmpfs|overlay"}) * 100` |
-
----
-
-## Gestion et Vérification des Services
-
-### Prometheus
-
-| Action | Commande |
-|--------|-----------|
-| Démarrer | `docker compose up -d` |
-| Redémarrer | `docker compose restart` |
-| Arrêter | `docker compose down` |
-
-Vérifier le statut :  
-👉 **http://[IP_PROMETHEUS]:9090/targets**
-
-### Grafana
-
-| Action | Commande |
-|--------|-----------|
-| Démarrer | `docker compose up -d` |
-| Accès web | http://[IP_GRAFANA]:3000 |
-| Configuration | ⚙️ → Data Sources → Prometheus |
-
----
-
-## Vérifications et Tests
-
-### Vérifier la collecte de métriques
-
-Dans Prometheus → **Status > Targets**
-- Les cibles (`node-exporter-bdd`) doivent être **UP**
-- Vérifier le délai de scrap (5–10s)
-
-### Vérifier les tableaux de bord Grafana
-
-- Les graphiques CPU, RAM et disque doivent s’actualiser automatiquement  
-- Le camembert reflète la répartition de l’espace utilisé/libre  
-
----
-
-## Ressources supplémentaires
-
-- Documentation Prometheus : [https://prometheus.io/docs/](https://prometheus.io/docs/)  
-- Node Exporter : [https://github.com/prometheus/node_exporter](https://github.com/prometheus/node_exporter)  
-- Documentation Grafana : [https://grafana.com/docs/](https://grafana.com/docs/)
+HF avec les dashboards :)
