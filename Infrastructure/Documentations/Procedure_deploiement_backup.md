@@ -101,7 +101,9 @@ BACKUP_FILE="$BACKUP_DIR/postgres_dump_$TIMESTAMP.sql.gz"
 # Dump de la BDD depuis le container Docker
 docker exec postgres_db pg_dump -U admin -d labytech | gzip > $BACKUP_FILE
 
-# Mettre la fin here
+find $BACKUP_DIR -name "postgres_dump_*.sql.gz" -mtime +7 -delete
+
+echo "Backup créé: $BACKUP_FILE"
 ```
 
 Rendre le script exécutable:
@@ -272,44 +274,6 @@ ssh-copy-id -i ~/.ssh/id_ed25519.pub root@192.168.100.31
 ```bash
 mkdir -p /backups
 ```
-
----
-
-## Restauration d'urgence
-
-### Restaurer depuis un backup sur le serveur BDD
-
-**Sur le serveur BDD:**
-
-1. Lister les backups disponibles:
-```bash
-ls -la /backups/
-```
-
-2. Décompresser le backup:
-```bash
-gunzip -c /backups/postgres_dump_20251016_134801.sql.gz > /tmp/restore.sql
-```
-
-3. Restaurer la BDD (attention: cela écrase la BDD existante):
-```bash
-docker exec -i postgres_db psql -U admin -d mabase < /tmp/restore.sql
-```
-
-Ou directement sans fichier temporaire:
-```bash
-gunzip -c /backups/postgres_dump_20251016_134801.sql.gz | docker exec -i postgres_db psql -U admin -d mabase
-```
-
-### Restaurer depuis un backup sur le serveur de backup
-
-Si le serveur BDD est mort, vous pouvez restaurer sur un autre serveur:
-
-```bash
-gunzip -c /backups/postgres_dump_20251016_134801.sql.gz | psql -U admin -d mabase -h localhost
-```
-
-(Nécessite PostgreSQL client installé et une BDD PostgreSQL disponible)
 
 ---
 
