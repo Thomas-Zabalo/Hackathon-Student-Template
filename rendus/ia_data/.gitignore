@@ -2,7 +2,6 @@
 babyfoot_dataset_cleaned.csv
 
 # Résultats d'analyse (peuvent être regénérés)
-*.png
 top_10_buteurs.csv
 top_5_defenseurs.csv
 influence_couleur.csv
