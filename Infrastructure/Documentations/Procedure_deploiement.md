@@ -446,7 +446,7 @@ https://192.168.1.1
 - **Username** : admin
 - **Password** : pfsense
 
-![Interface pfSense](Hackathon-Student-Template/Infrastructure/assets/Procedure_deploiement/interface_pfsense.png)
+![Interface pfSense](../assets/Procedure_deploiement/interface_pfsense.png)
 *Interface web de pfSense*
 
 ---
@@ -469,3 +469,4 @@ En cas de problème ou de demande spécifique (créer un nouveau conteneur, modi
 - **Accès & Permissions :** Enzo
 
 - **Documentation :** A jour au 16/10/2025 à 14:15
+
