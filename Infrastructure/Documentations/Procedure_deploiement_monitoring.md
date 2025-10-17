@@ -40,7 +40,7 @@ cd /opt/prometheus
 /opt/prometheus
  ├── docker-compose.yml
  ├── prometheus.yml
- └── data/               # stockage local de la base Prometheus
+ └── data/              
 ```
 
 ---
