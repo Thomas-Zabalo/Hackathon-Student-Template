@@ -140,7 +140,8 @@ print("✅ Connecté au Wi-Fi :", wlan.ifconfig())
 | HC-SR04 | 2 | 2.50 | 5.00 |
 | Buzzer | 2 | 1.00 | 2.00 |
 | Câblage & divers | - | 2.00 | 2.00 |
-| **Total** | | | **≈17.00 €** |
+| Breadboard (ou poste à fer à souder + étain + décapant) | 1 | 5.00 - 40.00 | 5.00 - 40.00 |
+| **Total** | | | **≈22.00 - 57€ €** |
 
 les prix peuvent varier selon les site où on les achetent, par exemple sur aliexpress sera moins cher
 
